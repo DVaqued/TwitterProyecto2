@@ -244,6 +244,8 @@ public class V_NuevaCuenta extends javax.swing.JFrame {
     private void btn_VolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_VolverActionPerformed
 
         dispose();
+       VentanaIncioSesion  vInc=new VentanaIncioSesion();
+       vInc.setVisible(true);
     }//GEN-LAST:event_btn_VolverActionPerformed
 
     private void txt_NombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_NombreActionPerformed

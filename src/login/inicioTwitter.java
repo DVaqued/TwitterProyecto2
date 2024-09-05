@@ -39,7 +39,8 @@ public class inicioTwitter {
         return false;
     }
     public String mensajeTweet(){
-        String tweetA="@"+username +": "+tweet+" "+fecha.toString() ;
-        return tweet;
+     String Tweet= "@" + username + ": " + tweet + " (" + fecha.toString() + ")";
+        return Tweet;
+       
     }
 }
