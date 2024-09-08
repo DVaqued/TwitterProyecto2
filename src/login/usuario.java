@@ -1,5 +1,6 @@
 package login;
 
+import java.awt.Image;
 import java.util.Date;
 
 public class usuario {
@@ -14,6 +15,7 @@ public class usuario {
     Seguidores/Seguidos
      */
     public static usuario[] usuarios = new usuario[200];
+    
     String usuario, nombre, contraseña;
     char genero;
     int edad;
@@ -27,6 +29,7 @@ public class usuario {
     public usuario() {
 
     }
+    
 
     public usuario(String usuario, String nombre, String contraseña, char genero, int edad, String[] seguidores, String[] seguidos, boolean estadoCuenta) {
         this.usuario = usuario;
@@ -53,13 +56,29 @@ public class usuario {
             for (int contadorUsers = 0; contadorUsers < usuarios.length; contadorUsers++) {
                 if (usuarios[contadorUsers] == null) {
                     usuarios[contadorUsers] = new usuario(usuario, nombre, contraseña, genero, edad, seguidores, seguidos, estadoCuenta);
+                   
                     return true;
                 }
             }
         }
         return false;
     }
-
+    
+     public boolean creacionCuenta(usuario usuarioNuevo) {
+        if (usersSearch(usuarioNuevo.usuario) == null) {
+            for (int contadorUsers = 0; contadorUsers < usuarios.length; contadorUsers++) {
+                if (usuarios[contadorUsers] == null) {
+                    usuarios[contadorUsers] = new usuario(usuarioNuevo.usuario, usuarioNuevo.nombre, usuarioNuevo.contraseña, usuarioNuevo.genero, usuarioNuevo.edad, usuarioNuevo.seguidores, usuarioNuevo.seguidos, usuarioNuevo.estadoCuenta);
+                   
+                    return true;
+                }
+                
+            }
+        }
+        return false;
+    }
+    
+   
     public boolean verificacionCuenta(String usuario, String contraseña) {
         usuario u = usersSearch(usuario);
         if (u != null && u.contraseña.equals(contraseña)) {
@@ -79,4 +98,6 @@ public class usuario {
     public String getUsuarioSesion() {
         return usuarioSesion;
     }
+    
+   
 }

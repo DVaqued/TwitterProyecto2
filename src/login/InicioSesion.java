@@ -4,6 +4,9 @@
  */
 package login;
 
+import java.awt.Image;
+import java.awt.MediaTracker;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,12 +19,40 @@ public class InicioSesion extends javax.swing.JFrame {
      * Creates new form InicioSesion
      */
     private String usuarioA;
+    private usuario usuarioLogeado;
    
     
     public InicioSesion() {
         initComponents();
     }
+    
+    
+    public void setUsuarioLogeado(usuario nuevoUsuario){
+        this.usuarioLogeado = nuevoUsuario;
+        usuarioActual.setText(usuarioLogeado.usuario);
+        
+       String rutaImagen = "/perfil_genero/foto_M.jpg";
+if (usuarioLogeado.genero == 'F') {
+    rutaImagen = "/perfil_genero/foto_F.jpg";
+}
 
+// Cargar la imagen como recurso desde el classpath
+ImageIcon imageIcon = new ImageIcon(getClass().getResource(rutaImagen)); 
+
+// Asegurarse de que la imagen se haya cargado correctamente
+if (imageIcon.getImageLoadStatus() == MediaTracker.COMPLETE) {
+    // Redimensionar la imagen
+    Image image = imageIcon.getImage();
+    Image newimg = image.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH); // Redimensionar suavemente
+    imageIcon = new ImageIcon(newimg);
+
+    // Establecer la imagen en el JLabel (foto)
+    foto.setIcon(imageIcon);
+} else {
+    System.out.println("No se pudo cargar la imagen.");
+}
+    }
+       
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -33,7 +64,7 @@ public class InicioSesion extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         cerrarSesion = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
+        logoTwitter = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         textTweets = new javax.swing.JTextPane();
         usuarioActual = new javax.swing.JLabel();
@@ -43,8 +74,8 @@ public class InicioSesion extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jtweetfield = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        fotoperfil = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
+        foto = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -60,8 +91,8 @@ public class InicioSesion extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logo_twitter/twitter-removebg-preview (1).png"))); // NOI18N
-        jLabel2.setText("jLabel2");
+        logoTwitter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logo_twitter/twitter-removebg-preview (1).png"))); // NOI18N
+        logoTwitter.setText("jLabel2");
 
         textTweets.setEditable(false);
         textTweets.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -73,16 +104,17 @@ public class InicioSesion extends javax.swing.JFrame {
 
         usuarioActual.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         usuarioActual.setText(usuario.usuarioSesion);
+        usuarioActual.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        usuarioActual.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                usuarioActualKeyTyped(evt);
+            }
+        });
 
         perfil.setText("Perfil");
         perfil.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 perfilMouseClicked(evt);
-            }
-        });
-        perfil.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                perfilActionPerformed(evt);
             }
         });
 
@@ -120,11 +152,7 @@ public class InicioSesion extends javax.swing.JFrame {
             }
         });
 
-        fotoperfil.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                fotoperfilKeyTyped(evt);
-            }
-        });
+        foto.setText("jLabel4");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -132,7 +160,7 @@ public class InicioSesion extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(326, 326, 326)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(logoTwitter, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -145,6 +173,9 @@ public class InicioSesion extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(foto, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(24, 24, 24))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(publicarTwit))
@@ -155,9 +186,6 @@ public class InicioSesion extends javax.swing.JFrame {
                         .addGap(21, 21, 21)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(perfil)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(1, 1, 1)
-                                .addComponent(fotoperfil, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(usuarioActual))))
                 .addGap(37, 37, 37)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -185,12 +213,12 @@ public class InicioSesion extends javax.swing.JFrame {
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(26, 26, 26))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(logoTwitter, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(5, 5, 5)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(5, 5, 5)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -199,8 +227,9 @@ public class InicioSesion extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(fotoperfil, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(12, 12, 12)
+                        .addComponent(foto, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(usuarioActual)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(perfil)
@@ -230,17 +259,17 @@ public class InicioSesion extends javax.swing.JFrame {
   if(jtweetfield.getText().length()>=140){
          JOptionPane.showMessageDialog(null,"NO se puede publicar este tweet");
          }else{
+      String username=usuarioActual.getText();
        String tweet=jtweetfield.getText();
-     inicioTwitter InT=new inicioTwitter("carlos",tweet);
-        InT.mensajeTweet();
+     inicioTwitter InT=new inicioTwitter(username,tweet);
+        boolean publicar=InT.publicar(username, tweet);
+        if(publicar==true){
        textTweets.setText(InT.mensajeTweet());    
-          
+        }else{
+        JOptionPane.showMessageDialog(null,"no se ha escrito ningun tweet");
+        }
   }
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void perfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_perfilActionPerformed
-       // TODO add your handling code here:
-    }//GEN-LAST:event_perfilActionPerformed
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
        
@@ -266,32 +295,34 @@ public class InicioSesion extends javax.swing.JFrame {
     }//GEN-LAST:event_textTweetsKeyTyped
 
     private void perfilMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_perfilMouseClicked
-       perfil ventanaP=new perfil();
-       ventanaP.setVisible(true);
        this.dispose();
+        perfil ventanaP = new perfil();
+       ventanaP.setVisible(true);
+       ventanaP.setUsuarioLogeado(usuarioLogeado);
+      
     }//GEN-LAST:event_perfilMouseClicked
 
-    private void fotoperfilKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fotoperfilKeyTyped
-      usuario us=new usuario();
-     
-    }//GEN-LAST:event_fotoperfilKeyTyped
-    public void setUsuarioActual(String usuarioA) {
-        this.usuarioA = usuarioA;
+    private void usuarioActualKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usuarioActualKeyTyped
+      usuarioActual.setText(usuarioA);
+    }//GEN-LAST:event_usuarioActualKeyTyped
+    public void setUsuarioActual(usuario nuevoUsuario) {
+        this.usuarioLogeado = nuevoUsuario;
+        this.usuarioA = nuevoUsuario.usuario;
         usuarioActual.setText(usuarioA);
     }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cerrarSesion;
-    private javax.swing.JLabel fotoperfil;
+    private javax.swing.JLabel foto;
     private javax.swing.JButton hashtags;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField jtweetfield;
+    private javax.swing.JLabel logoTwitter;
     private javax.swing.JButton perfil;
     private javax.swing.JButton publicarTwit;
     private javax.swing.JTextPane textTweets;

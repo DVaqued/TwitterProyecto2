@@ -211,33 +211,35 @@ public class V_NuevaCuenta extends javax.swing.JFrame {
         if (txt_Nombre.getText().equals("")|| txt_Username.getText().equals("") || txt_Edad.getText().equals("") || txt_password.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Error! Debe llenar todo los campos.");
         } else {
-            String user = txt_Username.getText();
-            String nombre = txt_Nombre.getText();
-            String contraseña = txt_password.getText();
+            usuario usuarioAgregado = new usuario();  
+            usuarioAgregado.usuario = txt_Username.getText();
+            usuarioAgregado.nombre = txt_Nombre.getText();
+            usuarioAgregado.contraseña = txt_password.getText();
             String generoTemp = (String) generoBox.getSelectedItem();
-            char genero=generoTemp.charAt(0);
+            usuarioAgregado.genero = generoTemp.charAt(0);
             String edadString = txt_Edad.getText();
-            int edad = Integer.parseInt(edadString);
+            usuarioAgregado.edad = Integer.parseInt(edadString);
 
-            String[] seguidores = new String[100];
-            String[] seguidos = new String[100];
+            usuarioAgregado.seguidores = new String[100];
+            usuarioAgregado.seguidos = new String[100];
 
-            boolean estadoCuenta = true;
+            usuarioAgregado.estadoCuenta=true;
 
-            usuario usuarioA = new usuario();            
+                   
 
-            boolean verificarCreacion = usuarioA.creacionCuenta(user, nombre, contraseña, genero, edad, seguidores, seguidos, estadoCuenta);
+            boolean verificarCreacion = usuarioAgregado.creacionCuenta(usuarioAgregado);
             if (verificarCreacion == true) {
                 JOptionPane.showMessageDialog(null, "Su cuenta se ha creado exitosamente.");
-                InicioSesion i = new InicioSesion();
-                usuario u=new usuario();
-                u.setUsuarioSesion(user);
+                InicioSesion pantallaDeInicio = new InicioSesion();
+                usuarioAgregado.setUsuarioSesion(usuarioAgregado.usuario);
                 
-                i.setVisible(true);
+                pantallaDeInicio.setVisible(true);
+                pantallaDeInicio.setUsuarioActual(usuarioAgregado);
                 this.dispose();
             } else {
                 JOptionPane.showMessageDialog(null, "Su cuenta no se ha podido crear.");
             }
+            
         }
     }//GEN-LAST:event_btn_CuentaCreadaActionPerformed
 

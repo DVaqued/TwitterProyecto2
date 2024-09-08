@@ -43,4 +43,7 @@ public class inicioTwitter {
         return Tweet;
        
     }
+   public void mostrarusers(){
+       System.out.println("@"+username);
+   }
 }
